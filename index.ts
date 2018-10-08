@@ -6,7 +6,7 @@ function main() {
     # S = state;
     # a = action;
     
-    Sa -> a;
+    S a -> a;
     `;
 
     const fsm = Parser.parse(example);

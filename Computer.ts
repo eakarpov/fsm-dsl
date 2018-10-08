@@ -1,12 +1,12 @@
-import {ParseObject} from "./Parser";
+import Parser from "./Parser";
 
 class Computer {
     private result: string;
     private argument: string;
-    private fsm: ParseObject;
+    private fsm: Parser;
     private log: string[] = [];
 
-    public initialize(parseObject: ParseObject): Computer {
+    public initialize(parseObject: Parser): Computer {
         this.fsm = parseObject;
         return this;
     }
