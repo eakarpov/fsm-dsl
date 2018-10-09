@@ -60,6 +60,24 @@ export default class Parser {
         return name[0].toLowerCase() !== name[0];
     }
 
+    static validate(parser: Parser): void|never {
+        const initials = parser.states.filter(e => e.type === 'initial');
+        if (initials.length !== 1) throw new Error('Not a single initial state');
+
+        parser.states.forEach(state => {
+            const rules = {};
+            parser.rules.forEach(rule => {
+                if (rule.input.state.id === state.id) {
+                    if (rules.hasOwnProperty(rule.input.event.id)) {
+                        throw new Error('Duplicated rule');
+                    } else {
+                        rules[rule.input.event.id] = true;
+                    }
+                }
+            });
+        });
+    }
+
     public static parse(input: string): Parser {
         const parser = new Parser();
         const strs = input.trim().split(';').map(e => e.trim());
@@ -107,6 +125,7 @@ export default class Parser {
                 parser.rules.push(rule);
             }
         });
+        Parser.validate(parser);
         return parser;
     }
 }

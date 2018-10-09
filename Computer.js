@@ -12,35 +12,33 @@ var Computer = /** @class */ (function () {
         return this;
     };
     Computer.prototype.dispatch = function (event, payload) {
-        try {
-            var rules = this.fsm.getRulesByState(this.state);
-            var filteredRules = rules.filter(function (e) { return e.input.event.id === event; });
-            var rule = filteredRules[0];
-            if (rule) {
-                var type = rule.input.event.type;
-                if (type) {
-                    switch (type) {
-                        case 'Int': {
-                            this.argument = parseInt(this.argument);
-                            break;
-                        }
-                        case 'Float': {
-                            this.argument = parseFloat(this.argument);
-                            break;
-                        }
+        var rules = this.fsm.getRulesByState(this.state);
+        var filteredRules = rules.filter(function (e) { return e.input.event.id === event; });
+        var rule = filteredRules[0];
+        if (rule) {
+            var type = rule.input.event.type;
+            if (type) {
+                switch (type) {
+                    case 'Int': {
+                        this.argument = parseInt(this.argument);
+                        break;
+                    }
+                    case 'Float': {
+                        this.argument = parseFloat(this.argument);
+                        break;
                     }
                 }
-                var res = rule.output.action.value(this.argument)(payload);
-                this.log.push("from " + this.state.id + " to " + rule.output.state.id + " with " + event + " action");
-                this.log.push("payload modified from " + this.argument + " to " + res);
-                this.argument = res;
-                this.state = rule.output.state;
             }
-            return this;
+            var res = rule.output.action.value(this.argument)(payload);
+            this.log.push("from " + this.state.id + " to " + rule.output.state.id + " with " + event + " action");
+            this.log.push("payload modified from " + this.argument + " to " + res);
+            this.argument = res;
+            this.state = rule.output.state;
         }
-        catch (e) {
-            console.log("Error while executing", e);
+        else {
+            throw new Error('Event not found');
         }
+        return this;
     };
     Computer.prototype.reload = function (input) {
         this.print();

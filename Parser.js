@@ -39,6 +39,24 @@ var Parser = /** @class */ (function () {
     Parser.isState = function (name) {
         return name[0].toLowerCase() !== name[0];
     };
+    Parser.validate = function (parser) {
+        var initials = parser.states.filter(function (e) { return e.type === 'initial'; });
+        if (initials.length !== 1)
+            throw new Error('Not a single initial state');
+        parser.states.forEach(function (state) {
+            var rules = {};
+            parser.rules.forEach(function (rule) {
+                if (rule.input.state.id === state.id) {
+                    if (rules.hasOwnProperty(rule.input.event.id)) {
+                        throw new Error('Duplicated rule');
+                    }
+                    else {
+                        rules[rule.input.event.id] = true;
+                    }
+                }
+            });
+        });
+    };
     Parser.parse = function (input) {
         var parser = new Parser();
         var strs = input.trim().split(';').map(function (e) { return e.trim(); });
@@ -89,6 +107,7 @@ var Parser = /** @class */ (function () {
                 parser.rules.push(rule);
             }
         });
+        Parser.validate(parser);
         return parser;
     };
     return Parser;
