@@ -6,10 +6,10 @@ function main() {
     # S = "Initial state";
     > A = "Second state";
     > B = "Third state";
-    > a : Int = x => x > 0;
-    > b : Int = x => x <= 0;
-    > c : Int = x => x + 11;
-    > d : Int = x => x - 5;
+    > a = "Add value";
+    > b = "Subtract value";
+    > c : Int = p => c => c + p;
+    > d : Int = p => c => p - c;
     
     S a -> d A;
     S b -> c B;
@@ -20,11 +20,9 @@ function main() {
     const fsm = Parser.parse(example);
 
     Computer
-        .initialize(fsm)
-        .load(1)
-        .execute()
-        .load(-5)
-        .execute();
+        .initialize(fsm, 2)
+        .dispatch('a', 3)
+        .dispatch('b', -3);
 
     Computer.printLog();
 }

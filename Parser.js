@@ -57,8 +57,8 @@ var Parser = /** @class */ (function () {
                     try {
                         parser.actions.push({
                             id: name_1,
-                            value: eval(value),
-                            type: /:\s*(\w+)/.exec(type)[1],
+                            value: /^".*/.test(value) ? value.replace(/"/g, "") : eval(value),
+                            type: type ? /:\s*(\w+)/.exec(type)[1] : void 0,
                         });
                     }
                     catch (e) {

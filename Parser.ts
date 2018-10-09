@@ -77,8 +77,8 @@ export default class Parser {
                     try {
                         parser.actions.push({
                             id: name,
-                            value: eval(value),
-                            type: /:\s*(\w+)/.exec(type)[1],
+                            value: /^".*/.test(value) ? value.replace(/"/g, "") : eval(value),
+                            type: type ? /:\s*(\w+)/.exec(type)[1] : void 0,
                         });
                     } catch (e) {
                         console.log("Error occurred while evaluating action", name);
