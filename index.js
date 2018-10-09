@@ -8,7 +8,11 @@ function main() {
     Computer_1.default
         .initialize(fsm, 2)
         .dispatch('a', 3)
-        .dispatch('b', -3);
+        .dispatch('b', -2)
+        .reload(5)
+        .dispatch('a', -3)
+        .dispatch('b', 2)
+        .print();
     Computer_1.default.printLog();
 }
 main();

@@ -42,6 +42,14 @@ var Computer = /** @class */ (function () {
             console.log("Error while executing", e);
         }
     };
+    Computer.prototype.reload = function (input) {
+        this.print();
+        this.state = this.fsm.getInitial();
+        if (input) {
+            this.argument = input;
+        }
+        return this;
+    };
     Computer.prototype.print = function () {
         console.log(this.argument);
     };

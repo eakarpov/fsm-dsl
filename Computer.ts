@@ -45,6 +45,15 @@ class Computer {
         }
     }
 
+    public reload(input?: any) {
+        this.print();
+        this.state = this.fsm.getInitial();
+        if (input) {
+            this.argument = input;
+        }
+        return this;
+    }
+
     public print(): void {
         console.log(this.argument);
     }
